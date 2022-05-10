@@ -1,58 +1,52 @@
 from reader import read_ds
 from get_matches import get_matches
+from get_prediction import get_prediction, get_all_predictions
+from datetime import datetime
 
-import pandas as pd
-import math
+pl_only = False
+
+def print_matches(matches):
+    for match in matches:
+        index = matches.index(match) +1
+        print("For a " + match[0] + " VS " + match[1] + " Prediction, Type: '" + str(index) + "'")
+        print('')
+    print_help()
+
+def print_help():
+    print("Input 'X' To Exit")
+    print("Input 'D' For New Date")
+    print("Input 'S' For Summary Prediction")
+    print("Input 'H' For Help")
+    pl_string = "ON" if pl_only else "OFF"
+    print("Premier League Only: " + pl_string + ". Input 'P' to toggle")
 
 ds = read_ds()
-
 home_df = ds[0]
 away_df = ds[1]
 
-matches = get_matches()
-print(matches)
+x = 1
+date_input = datetime.today().strftime("%Y-%m-%d")
+user_input = "D"
+matches = []
+while x == 1:
+    if user_input == "D":
+        date_input = input("Input a date to check for fixtures (YYYY-MM-DD): ")
+        print('')
+        matches = get_matches(date_input, pl_only)
+        print_matches(matches)
 
-for x in matches:
-    homeTeam = x[0]
-    awayTeam = x[1]
+    user_input = input("Prediction: ")
+    
 
-    print(homeTeam + ' Vs ' + awayTeam)
-
-    home_goals = home_df.loc[home_df['Team'] == homeTeam].head(10)['Goals'].mean()
-    home_goals_conceded = home_df.loc[home_df['Team'] == homeTeam].head(10)['GoalsConceded'].mean()
-
-    away_goals = away_df.loc[away_df['Team'] == awayTeam].head(10)['Goals'].mean()
-    away_goals_conceded = away_df.loc[away_df['Team'] == awayTeam].head(10)['GoalsConceded'].mean()
-
-    home_prediction = math.floor(home_goals * away_goals_conceded)
-    away_prediction = math.floor(away_goals * home_goals_conceded)
-
-    print(str(home_prediction) + ' - ' + str(away_prediction))
-    print('BTTS: ' + str(home_prediction > 0 and away_prediction > 0))
-    print('---------')
-
-    # print('Goals: ' + str(home_df.loc[home_df['Team'] == homeTeam].head(10)['Goals'].mean()))
-    # print('Shots: ' + str(home_df.loc[home_df['Team'] == homeTeam].head(10)['Shots'].mean()))
-    # print('SOT: ' + str(home_df.loc[home_df['Team'] == homeTeam].head(10)['ShotsOnTarget'].mean()))
-    # print('Fouls: ' + str(home_df.loc[home_df['Team'] == homeTeam].head(10)['Fouls'].mean()))
-    # print('Corners: ' + str(home_df.loc[home_df['Team'] == homeTeam].head(10)['Corners'].mean()))
-    # print('Yellows: ' + str(home_df.loc[home_df['Team'] == homeTeam].head(10)['Yellows'].mean()))
-    # print('Reds: ' + str(home_df.loc[home_df['Team'] == homeTeam].head(10)['Reds'].mean()))
-    # print('ShotsAgainst: ' + str(home_df.loc[home_df['Team'] == homeTeam].head(10)['ShotsConceded'].mean()))
-    # print('SOTAgainst: ' + str(home_df.loc[home_df['Team'] == homeTeam].head(10)['ShotsOnTargetConceded'].mean()))
-    # print('CornersAgainst: ' + str(home_df.loc[home_df['Team'] == homeTeam].head(10)['CornersConceded'].mean()))
-    # print('GoalsAgainst: ' + str(home_df.loc[home_df['Team'] == homeTeam].head(10)['GoalsConceded'].mean()))
-
-    # print('-------')
-
-    # print('Goals: ' + str(away_df.loc[away_df['Team'] == awayTeam].head(10)['Goals'].mean()))
-    # print('Shots: ' + str(away_df.loc[away_df['Team'] == awayTeam].head(10)['Shots'].mean()))
-    # print('SOT: ' + str(away_df.loc[away_df['Team'] == awayTeam].head(10)['ShotsOnTarget'].mean()))
-    # print('Fouls: ' + str(away_df.loc[away_df['Team'] == awayTeam].head(10)['Fouls'].mean()))
-    # print('Corners: ' + str(away_df.loc[away_df['Team'] == awayTeam].head(10)['Corners'].mean()))
-    # print('Yellows: ' + str(away_df.loc[away_df['Team'] == awayTeam].head(10)['Yellows'].mean()))
-    # print('Reds: ' + str(away_df.loc[away_df['Team'] == awayTeam].head(10)['Reds'].mean()))
-    # print('ShotsAgainst: ' + str(away_df.loc[away_df['Team'] == awayTeam].head(10)['ShotsConceded'].mean()))
-    # print('SOTAgainst: ' + str(away_df.loc[away_df['Team'] == awayTeam].head(10)['ShotsOnTargetConceded'].mean()))
-    # print('CornersAgainst: ' + str(away_df.loc[away_df['Team'] == awayTeam].head(10)['CornersConceded'].mean()))
-    # print('GoalsAgainst: ' + str(away_df.loc[away_df['Team'] == awayTeam].head(10)['GoalsConceded'].mean()))
+    if user_input == "X":
+        x += 1
+    if user_input == "H":
+        print_help()
+    if user_input == "P":
+        pl_only = not pl_only
+        
+    if user_input == "S":
+        get_all_predictions(matches, home_df, away_df)
+    
+    if user_input.isnumeric() and int(user_input) < len(matches) +1:
+        get_prediction(matches[int(user_input)-1], home_df, away_df)

@@ -10,12 +10,14 @@ def read_ds():
     df6= pd.read_csv("https://www.football-data.co.uk/mmz4281/2021/E1.csv")
     df7 = pd.read_csv("https://www.football-data.co.uk/mmz4281/2122/F1.csv")
     df8= pd.read_csv("https://www.football-data.co.uk/mmz4281/2021/F1.csv")
-    df9 = pd.read_csv("https://www.football-data.co.uk/mmz4281/2122/G1.csv")
-    df10= pd.read_csv("https://www.football-data.co.uk/mmz4281/2021/G1.csv")
+    df9 = pd.read_csv("https://www.football-data.co.uk/mmz4281/2122/D1.csv")
+    df10= pd.read_csv("https://www.football-data.co.uk/mmz4281/2021/D1.csv")
     df11 = pd.read_csv("https://www.football-data.co.uk/mmz4281/2122/I1.csv")
     df12= pd.read_csv("https://www.football-data.co.uk/mmz4281/2021/I1.csv")
+    df13 = pd.read_csv("https://www.football-data.co.uk/mmz4281/2122/E2.csv")
+    df14= pd.read_csv("https://www.football-data.co.uk/mmz4281/2021/E2.csv")
 
-    raw_df = pd.concat([df, df2, df3, df4, df5, df6, df7, df8, df9, df10, df11, df12])
+    raw_df = pd.concat([df, df2, df3, df4, df5, df6, df7, df8, df9, df10, df11, df12, df13, df14])
     raw_df = raw_df[["Date", "HomeTeam", "AwayTeam", "Referee", "FTHG", "FTAG", "HC", "HS", "HST", "HF", "HY", "HR", "AC", "AS", "AST", "AF", "AY", "AR"]]
     raw_df['Date'] = pd.to_datetime(raw_df['Date'], format="%d/%m/%Y")
     raw_df = raw_df.sort_values(by=['Date'], ascending=False)
@@ -55,6 +57,7 @@ def read_ds():
         'HC',
         'HY',
         'HR',
+        'AwayTeam',
         'AS',
         'AST',
         'FTAG',
@@ -72,6 +75,7 @@ def read_ds():
             'HC':'Corners',
             'HY':'Yellows',
             'HR':'Reds',
+            'AwayTeam' : 'Opponent',
             'AS':'ShotsConceded',
             'AST':'ShotsOnTargetConceded',
             'FTAG':'GoalsConceded',
@@ -89,6 +93,7 @@ def read_ds():
         'AC',
         'AY',
         'AR',
+        'HomeTeam',
         'HS',
         'HST',
         'FTHG',
@@ -106,6 +111,7 @@ def read_ds():
             'AC':'Corners',
             'AY':'Yellows',
             'AR':'Reds',
+            'HomeTeam': 'Opponent',
             'HS':'ShotsConceded',
             'HST':'ShotsOnTargetConceded',
             'FTHG':'GoalsConceded',
