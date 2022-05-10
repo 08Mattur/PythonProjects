@@ -26,8 +26,10 @@ def basic_prediction(pl_data, homeTeam, awayTeam, single_date, date_format, row)
     away_g = row["FTAG"]
 
     result = "draw"
+    home_win = 0
     if home_g > away_g:
         result = "home"
+        home_win = 1
     elif away_g > home_g:
         result = "away"
 
@@ -48,4 +50,4 @@ def basic_prediction(pl_data, homeTeam, awayTeam, single_date, date_format, row)
     # print("Actual Score: " + str(home_g) + " - " + str(away_g))
     # print("-----")
     
-    return [correct_result, correct_btts]
+    return [correct_result, correct_btts, home_win]

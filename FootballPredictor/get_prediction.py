@@ -7,8 +7,8 @@ def get_prediction(match, home_df, away_df):
 
     print(homeTeam + ' Vs ' + awayTeam)
 
-    home_df = home_df[home_df['Team'] == homeTeam].head(10)
-    away_df = away_df[away_df['Team'] == awayTeam].head(10)
+    home_df = home_df[home_df['Team'] == homeTeam].head(7)
+    away_df = away_df[away_df['Team'] == awayTeam].head(7)
 
     home_goals = home_df['Goals'].mean()
     home_goals_conceded = home_df['GoalsConceded'].mean()

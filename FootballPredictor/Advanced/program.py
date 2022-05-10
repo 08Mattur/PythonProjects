@@ -31,6 +31,7 @@ end_date = date(2022, 5, 10)
 counter = 0
 correct_result = 0
 correct_btts = 0
+home_counter = 0
 
 current_result_streak = 0
 highest_result_streak = 0
@@ -49,6 +50,7 @@ for single_date in daterange(start_date, end_date):
         predictions = basic_prediction(pl_data, homeTeam, awayTeam, single_date, date_format, row)
         correct_result += predictions[0]
         correct_btts += predictions[1]
+        home_counter += predictions[2]
 
         current_result_streak = (current_result_streak + 1) * predictions[0]
         if current_result_streak > highest_result_streak:
@@ -68,6 +70,9 @@ print("Percentage: " + str(round((correct_btts/counter)*100, 2)) + "%")
 print('')
 print("Highest Result Streak: " + str(highest_result_streak))
 print("Highest BTTS Streak: " + str(highest_btts_streak))
+print('')
+print("Home Wins: " + str(home_counter))
+print("Percentage: " + str(round((home_counter/counter)*100, 2)) + "%")
 
     
 
